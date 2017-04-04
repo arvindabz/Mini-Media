@@ -1,0 +1,153 @@
+/* Styles */
+#app {
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #4d4d4d;
+}
+
+/*
+ *************************************************************************************************************
+ ********************************************************   Bootstrap Override   *****************************
+ *************************************************************************************************************
+*/
+.navbar-default .navbar-nav>li>a {
+    color: white !important;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    background-color: #2779A7 !important;
+}
+
+
+.navbar-default {
+    background-color: #2779A7 !important;
+}
+
+navbar-default .notifications {
+    position: relative;
+}
+
+    .navbar-default .notifications .badge{
+        position: absolute;
+        top: 5px;
+        right: -4px;
+        background-color: red;
+    }
+
+.navposition {
+    left: 200px !important;
+}
+
+textarea {
+  resize: none;
+  border-style: dashed;
+}
+
+/*
+ *************************************************************************************************************
+ ********************************************************   Custom    ****************************************
+ *************************************************************************************************************
+*/
+
+/*
+  Serach input style:
+  Resource: http://bootsnipp.com/snippets/featured/stylish-search-box
+*/
+#custom-search-input {
+        margin:0;
+        margin-top: 10px;
+        padding: 0;
+        width: 100%;
+    }
+
+    #custom-search-input .search-query {
+        padding-right: 3px;
+        padding-right: 4px \9;
+        padding-left: 3px;
+        padding-left: 4px \9;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+
+    #custom-search-input button {
+        border: 0;
+        background: none;
+        /** belows styles are working good */
+        padding: 2px 5px;
+        margin-top: 2px;
+        position: relative;
+        left: -28px;
+        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        color:#2779A7;
+    }
+
+    .search-query:focus + button {
+        z-index: 3;
+    }
+
+
+.copmponentMargin {
+    margin-top: 80px !important;
+}
+
+/*
+  Post Styles
+*/
+.postAdd {
+  height: 320px;
+  position: relative;
+  margin-bottom: 30px;
+}
+  .postAdd>h4 {
+    position: absolute;
+    top: 0;
+    left: 30%;
+    top:4%;
+    font-size: 3em;
+    font-family: Arial;
+  }
+
+  .postAdd>input {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    left: 0;
+    height: 100px;
+  }
+
+  .postTextArea {
+    position: absolute;
+    width: 100%;
+    top:90px;
+  }
+
+  .postAddBtn {
+    position: absolute;
+    top:270px;
+    left: 0%;
+    width: 110px;
+    height: 40px;
+  }
+
+.postProfilePic {
+  width: 60px;
+}
+
+
+/*
+  File Input
+**/
+.fileUpload>label {
+  position: absolute;
+  top:270px;
+  left: 80%;
+  width: 110px;
+  height: 40px !important;
+}

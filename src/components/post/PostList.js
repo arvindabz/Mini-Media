@@ -1,11 +1,15 @@
 import React, {PropTypes} from  'react';
 
 const PostList = ({posts}) => {
+
   return (
-    <div className="col-lg-8 col-lg-offset-2">
+    <div className="col-lg-8 col-lg-offset-3">
       {posts.map(post =>
-        <div className="container-fluid jumbotron">
-          {post.text}
+        <div key={post.guid} className="jumbotron">
+            <img src={post.imgUrl} className="postListImg" />
+            <div key={post.guid} className="quote">
+              {post.text}
+            </div>
         </div>
       )}
     </div>
@@ -13,7 +17,7 @@ const PostList = ({posts}) => {
 };
 
 PostList.propTypes = {
-  posts: PropTypes.array.isRequired
+  posts: React.PropTypes.array.isRequired
 };
 
 export default PostList;

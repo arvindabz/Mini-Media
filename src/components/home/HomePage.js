@@ -1,9 +1,8 @@
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as homeActions from '../../actions/homeActions';
 import PostList from '../post/PostList';
-import PostCreationDialog from '../post/PostCreationDialog';
 import profileImage from '../../images/arv.jpg';
 
 class HomePage extends React.Component {
@@ -34,22 +33,39 @@ class HomePage extends React.Component {
   }
 
   onClickAddPost() {
+    var img = $('#postimg').attr('src');
+    var tb = $("#postTB").val();
+
+    if (!$.trim($("#postTB").val()) && !$('#postimg').attr('src')) {
+      alert('Empty');
+      return;
+    }
     $('#postTB').val('');
+
+    this.state.post.guid = this.props.posts.length;
     this.props.actions.createPost(this.state.post);
+
+    // Reset current post since it is added to the list of posts
+    this.state.post.imgUrl = '';
+    this.state.post.guid = '';
+    this.state.post.text = '';
+    
+    $("#postimg").hide();
+    $("#postimg").attr('src', '');
+    $("#addPostBtn").unbind("click", this.onClickAddPost);
+    $("#addPostBtn").prop('disabled', true);
   }
 
   onFileUpload(input) {
     if (input.target.files && input.target.files[0]) {
       var reader = new FileReader();
-
       let self = this;
       var sender = input;
       reader.onload = function (e) {
         const post = self.state.post;
-        const guid = self.getGuid();
         const path = e.target.result;
         post.imgUrl = path;
-        post.guid = guid;
+
         self.setState(
           {
             post: post
@@ -61,6 +77,11 @@ class HomePage extends React.Component {
           .height(200);
       };
       reader.readAsDataURL(input.target.files[0]);
+      $("#my-file-selector")[0].value = '';
+      $("#postimg").show();
+      $("#addPostBtn").prop('disabled', false);
+
+      $("#addPostBtn").click(this.onClickAddPost);
     }
   }
 
@@ -68,77 +89,61 @@ class HomePage extends React.Component {
     return <div key={index}>{post.text}</div>;
   }
 
-  getGuid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
+  render() {
+    if (this.props.posts.length == 0) {
+      return (
+        <div>
+          <img id="postimg" />
+          {this.getPostCreationDialogBox()}
+        </div>
+      );
     }
 
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4() + Date.now();
+    return (
+      <div>
+        <img id="postimg" />
+        {this.getPostCreationDialogBox()}
+        <PostList posts={this.props.posts} />
+      </div>
+    );
+
   }
 
-  getPostCreationDialog() {
+  getPostCreationDialogBox() {
     let style = {
       'display': 'none'
     }
+    
     return (
-      <div className="col-lg-6 col-lg-offset-3">
+      <div className="col-lg-4 col-lg-offset-4">
         <div className="postAdd">
-          <img className="postProfilePic" src={profileImage}/>
+          <img className="postProfilePic" src={profileImage} />
 
           <div className="form-group postTextArea">
             <div className="form-group">
-              <textarea
-                id="postTB"
-                className="form-control" rows={8}
-                onChange={this.addPostTextChanging}
-                placeholder="What's up?"
-              >
-              </textarea>
+              <textarea id="postTB" className="form-control" rows={8} onChange={this.addPostTextChanging} placeholder="What's up?"></textarea>
             </div>
           </div>
         </div>
 
         <div className="postButtons">
-          <button className="btn btn-info postCreationAddBtn" onClick={this.onClickAddPost}>
+          <button id='addPostBtn' disabled='true' className="btn btn-info postCreationAddBtn">
             Add
           </button>
 
-          <div className="fileUpload">
+          <div className="fileUpload" >
             <label className="btn btn-info" for="my-file-selector">
               <input
                 id="my-file-selector"
                 type="file"
                 accept="image/*"
                 style={style}
-                onChange={this.onFileUpload}/>
+                onChange={this.onFileUpload} />
               Upload File
-            </label>
+          </label>
             <span className='label label-info' id="upload-file-info"></span>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  render() {
-    if (this.props.posts.length == 0) {
-      return (
-        <div>
-          <img id="postimg"/>
-          <PostCreationDialog onTextChange={this.addPostTextChanging} onClickAddPost={this.onClickAddPost}
-                              onFileUpload={this.onFileUpload}/>
-        </div>
-      );
-    }
-
-    const guid = this.getGuid();
-    return (
-      <div>
-        {this.getPostCreationDialog()}
-        <PostList posts={this.props.posts}/>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+﻿import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as homeActions from '../../actions/homeActions';
@@ -25,6 +25,14 @@ class HomePage extends React.Component {
   }
 
   addPostTextChanging(event) {
+    if (event.target.value.length > 0 || $('#postimg').attr('src')) {
+      $("#addPostBtn").prop('disabled', false);
+      $("#addPostBtn").click(this.onClickAddPost);
+    } else {
+      $("#addPostBtn").unbind("click", this.onClickAddPost);
+      $("#addPostBtn").prop('disabled', true);
+    }
+
     const post = this.state.post;
     post.text = event.target.value;
     this.setState({
@@ -33,15 +41,7 @@ class HomePage extends React.Component {
   }
 
   onClickAddPost() {
-    var img = $('#postimg').attr('src');
-    var tb = $("#postTB").val();
-
-    if (!$.trim($("#postTB").val()) && !$('#postimg').attr('src')) {
-      alert('Empty');
-      return;
-    }
     $('#postTB').val('');
-
     this.state.post.guid = this.props.posts.length;
     this.props.actions.createPost(this.state.post);
 
@@ -49,9 +49,10 @@ class HomePage extends React.Component {
     this.state.post.imgUrl = '';
     this.state.post.guid = '';
     this.state.post.text = '';
-    
+
     $("#postimg").hide();
     $("#postimg").attr('src', '');
+
     $("#addPostBtn").unbind("click", this.onClickAddPost);
     $("#addPostBtn").prop('disabled', true);
   }
@@ -78,9 +79,10 @@ class HomePage extends React.Component {
       };
       reader.readAsDataURL(input.target.files[0]);
       $("#my-file-selector")[0].value = '';
+      
       $("#postimg").show();
-      $("#addPostBtn").prop('disabled', false);
 
+      $("#addPostBtn").prop('disabled', false);
       $("#addPostBtn").click(this.onClickAddPost);
     }
   }
@@ -113,7 +115,7 @@ class HomePage extends React.Component {
     let style = {
       'display': 'none'
     }
-    
+
     return (
       <div className="col-lg-4 col-lg-offset-4">
         <div className="postAdd">
